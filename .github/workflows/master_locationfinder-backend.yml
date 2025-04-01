@@ -1,0 +1,51 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App - locationfinder-backend
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to registry
+      uses: docker/login-action@v2
+      with:
+        registry: https://locationfinderacr.azurecr.io/
+        username: ${{ secrets.AzureAppService_ContainerUsername_6738ce0c078844879b3b16d7a72d1815 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_5e7577f41a6a48f8aea88df246a273b9 }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: locationfinderacr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_6738ce0c078844879b3b16d7a72d1815 }}/locationfinderacr/locationfinderbackend:${{ github.sha }}
+        file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'locationfinder-backend'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_9e63dd35598a4ab0a001e5de0a18b851 }}
+        images: 'locationfinderacr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_6738ce0c078844879b3b16d7a72d1815 }}/locationfinderacr/locationfinderbackend:${{ github.sha }}'
