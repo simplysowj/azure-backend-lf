@@ -26,11 +26,11 @@ RUN mkdir /var/run/sshd && \
 # Copy SSH configuration file
 COPY sshd_config.txt /etc/ssh/sshd_config
 
-# Copy the requirements file separately to leverage Docker caching
+# Copy dependency files first for better Docker layer caching
 COPY requirements.txt /app/requirements.txt
 
 # Install dependencies
-RUN pip install --default-timeout=100 --upgrade pip && pip install --no-cache-dir -r /app/backend/requirements.txt
+RUN pip install --default-timeout=100 --upgrade pip && pip install --no-cache-dir -r /app/requirements.txt
 
 # Copy the rest of the Django project files
 COPY . .
