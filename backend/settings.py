@@ -53,11 +53,13 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://locationfinder-backend-dffaarfpgvgdcdas.eastus2-01.azurewebsites.net"
+    "https://locationfinder-backend-dffaarfpgvgdcdas.eastus2-01.azurewebsites.net",
+    "https://salmon-rock-0b662ee0f.6.azurestaticapps.net"
 ]
 CORS_ALLOW_ALL_ORIGINS = True  # Temporarily allow all origins
 CSRF_TRUSTED_ORIGINS = ["http://localhost:5173",
-                       "https://locationfinder-backend-dffaarfpgvgdcdas.eastus2-01.azurewebsites.net"]  # Include frontend origin
+                       "https://locationfinder-backend-dffaarfpgvgdcdas.eastus2-01.azurewebsites.net",
+                       "https://salmon-rock-0b662ee0f.6.azurestaticapps.net"]  # Include frontend origin
 CORS_ALLOW_CREDENTIALS = True  # Allow cookies and authentication
 
 from decouple import config
