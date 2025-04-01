@@ -1,0 +1,26 @@
+# Python
+env/
+venv/
+
+# React
+node_modules/
+build/
+
+# Backend
+myenv/
+
+# SQLite database
+db.sqlite3
+
+# System files
+.DS_Store
+
+# Environment files
+.env
+
+# Media files
+media/
+backend/media/
+
+# Logs
+backend/debug.log
